@@ -7,50 +7,63 @@ import { balanceOf } from "thirdweb/extensions/erc721";
 export const StakeRewards = () => {
     const account = useActiveAccount();
 
+    // Ensure that even when accountAddress is not available, we pass a fallback value
+    const accountAddress = account?.address || '0x0000000000000000000000000000000000000000'; // Fallback value
+
+    // Fetch the token balance, pass a valid fallback address when accountAddress is not available
     const {
         data: tokenBalance,
         isLoading: isTokenBalanceLoading,
         refetch: refetchTokenBalance,
-    } = useReadContract(
-        balanceOf,
-        {
-            contract: REWARD_TOKEN_CONTRACT,
-            owner: account?.address || "",
-        }
-    )
-    
+    } = useReadContract({
+        contract: REWARD_TOKEN_CONTRACT,
+        method: "balanceOf",
+        params: [accountAddress], // Always pass a valid address, even if it's a fallback
+    });
+
+    // Fetch the staked information, pass a valid fallback address when accountAddress is not available
     const {
         data: stakedInfo,
         refetch: refetchStakedInfo,
     } = useReadContract({
         contract: STAKING_CONTRACT,
         method: "getStakeInfo",
-        params: [account?.address || ""],
+        params: [accountAddress], // Always pass a valid address, even if it's a fallback
     });
 
+    // Refresh the stake info periodically, but only when the real account address is available
     useEffect(() => {
-        refetchStakedInfo();
-        const interval = setInterval(() => {
+        if (account?.address) {
             refetchStakedInfo();
-        }, 1000);
-        return () => clearInterval(interval);
-    }, []);
+            const interval = setInterval(() => {
+                refetchStakedInfo();
+            }, 1000);
+            return () => clearInterval(interval);
+        }
+    }, [account?.address, refetchStakedInfo]);
 
     return (
         <div style={{ width: "100%", margin: "20px 0", display: "flex", flexDirection: "column" }}>
-            {!isTokenBalanceLoading && (
-                <p>Wallet Balance: {toEther(BigInt(tokenBalance!.toString()))}</p>
+            {/* Show token balance only if it's not loading and the balance exists */}
+            {!isTokenBalanceLoading && tokenBalance && (
+                <p>Wallet Balance: {toEther(BigInt(tokenBalance.toString()))}</p>
             )}
-            <h2 style={{ marginBottom: "20px"}}>Stake Rewards: {stakedInfo && toEther(BigInt(stakedInfo[1].toString()))}</h2>
+            <h2 style={{ marginBottom: "20px" }}>
+                Stake Rewards: {stakedInfo && toEther(BigInt(stakedInfo[1]?.toString() || '0'))}
+            </h2>
+            {/* Claim rewards button */}
             <TransactionButton
-                transaction={() => (
-                    prepareContractCall({
-                        contract:STAKING_CONTRACT,
+                transaction={() => {
+                    if (!account?.address) {
+                        throw new Error("Account address is undefined");
+                    }
+                    return prepareContractCall({
+                        contract: STAKING_CONTRACT,
                         method: "claimRewards",
-                    })
-                )}
+                    });
+                }}
                 onTransactionConfirmed={() => {
-                    alert("Rewards claimed!")
+                    alert("Rewards claimed!");
                     refetchStakedInfo();
                     refetchTokenBalance();
                 }}
@@ -64,7 +77,9 @@ export const StakeRewards = () => {
                     width: "100%",
                     fontSize: "12px"
                 }}
-            >Claim Rewards</TransactionButton>
+            >
+                Claim Rewards
+            </TransactionButton>
         </div>
-    )
+    );
 };

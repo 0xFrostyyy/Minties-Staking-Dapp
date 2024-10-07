@@ -90,7 +90,7 @@ export const NFTCard = ({ nft, refetch, refecthStakedInfo }: OwnedNFTsProps) => 
                                 transaction={() => (
                                     approve({
                                         contract: NFT_CONTRACT,
-                                        to: STAKING_CONTRACT.address,
+                                        to: STAKING_CONTRACT.address as `0x${string}`,
                                         tokenId: nft.id
                                     })
                                 )}
