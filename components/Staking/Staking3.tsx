@@ -56,10 +56,7 @@ export const Staking3 = () => {
         params: [account?.address || "0x0000000000000000000000000000000000000000"],  // Fallback to a placeholder address
     });
 
-    // Return early if there's no valid account
-    if (!account?.address) {
-        return <ConnectButton client={client} chain={chain} />;
-    }
+    
 
     return (
         <div style={{
@@ -71,11 +68,7 @@ export const Staking3 = () => {
             width: "500px",
             padding: "20px",
         }}>
-            <ConnectButton
-                client={client}
-                chain={chain}
-            />
-            <div style={{
+            {/* <div style={{
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
@@ -110,12 +103,12 @@ export const Staking3 = () => {
             <hr style={{
                 width: "100%",
                 border: "1px solid #333"
-            }} />
+            }} /> */}
             <div style={{ 
                 margin: "20px 0",
                 width: "100%"
             }}>
-                <h2>Owned NFTs</h2>
+                <h2>Owned NFTs  Collection 2</h2>
                 <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", width: "500px"}}>
                     {ownedNFTs && ownedNFTs.length > 0 ? (
                         ownedNFTs.map((nft) => (

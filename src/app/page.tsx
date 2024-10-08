@@ -4,22 +4,21 @@ import { chain } from "./chain";
 import { Staking } from "../../components/Staking/Staking";
 import { Staking2 } from "../../components/Staking/Staking2";
 import { Staking3 } from "../../components/Staking/Staking3";
+import { ConnectButton, TransactionButton, useActiveAccount, useReadContract } from "thirdweb/react";
 
 export default function Home() {
   return (
-    <div style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      margin: "20px auto",
-      width: "500px",
-    }}>
+    <div className="flex flex-col gap-3 items-center">
       <h1>ERC-721 Staking App</h1>
       <ConnectEmbed
         client={client}
         chain={chain}
       />
-      <div className="flex gap-2 flex-col ixml:flex-row">
+      <ConnectButton
+          client={client}
+          chain={chain}
+      />
+      <div className="grid grid-cols-1 lg:grid-cols-2 xxl:grid-cols-3 gap-3">
         <Staking />
         <Staking2 />
         <Staking3 />

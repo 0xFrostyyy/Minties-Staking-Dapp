@@ -50,7 +50,8 @@ export const NFTCard2 = ({ nft, refetch, refecthStakedInfo }: OwnedNFTsProps) =>
                     backgroundColor: "rgba(0, 0, 0, 0.5)",
                     display: "flex",
                     justifyContent: "center",
-                    alignItems: "center"
+                    alignItems: "center",
+                    zIndex: "2"
                 }}>
                     <div style={{
                         minWidth: "300px",
