@@ -3,15 +3,15 @@
 import { chain } from "@/app/chain";
 import { client } from "@/app/client";
 import { ConnectButton, TransactionButton, useActiveAccount, useReadContract } from "thirdweb/react";
-import { StakeRewards } from "./StakeRewards";
-import { NFT_CONTRACT, STAKING_CONTRACT } from "../utils/contracts";
+import { StakeRewards3 } from "../StakeRewards/StakeRewards3";
+import { NFT_CONTRACT_3, STAKING_CONTRACT_3 } from "../../utils/contracts";
 import { NFT } from "thirdweb";
 import { useEffect, useState } from "react";
 import { claimTo, getNFTs, ownerOf, totalSupply } from "thirdweb/extensions/erc721";
-import { NFTCard } from "./NFTCard";
-import { StakedNFTCard } from "./StakedNFTCard";
+import { NFTCard3 } from "../NFTCards/NFTCard3";
+import { StakedNFTCard3 } from "../StakedNFTCards/StakedNFTCard3";
 
-export const Staking = () => {
+export const Staking3 = () => {
     const account = useActiveAccount();
 
     const [ownedNFTs, setOwnedNFTs] = useState<NFT[]>([]);
@@ -20,17 +20,17 @@ export const Staking = () => {
         let ownedNFTs: NFT[] = [];
 
         const totalNFTSupply = await totalSupply({
-            contract: NFT_CONTRACT,
+            contract: NFT_CONTRACT_3,
         });
         const nfts = await getNFTs({
-            contract: NFT_CONTRACT,
+            contract: NFT_CONTRACT_3,
             start: 0,
             count: parseInt(totalNFTSupply.toString()),
         });
         
         for (let nft of nfts) {
             const owner = await ownerOf({
-                contract: NFT_CONTRACT,
+                contract: NFT_CONTRACT_3,
                 tokenId: nft.id,
             });
             if (owner === account?.address) {
@@ -51,7 +51,7 @@ export const Staking = () => {
         data: stakedInfo,
         refetch: refetchStakedInfo,
     } = useReadContract({
-        contract: STAKING_CONTRACT,
+        contract: STAKING_CONTRACT_3,
         method: "getStakeInfo",
         params: [account?.address || "0x0000000000000000000000000000000000000000"],  // Fallback to a placeholder address
     });
@@ -87,7 +87,7 @@ export const Staking = () => {
                 <TransactionButton
                     transaction={() => (
                         claimTo({
-                            contract: NFT_CONTRACT,
+                            contract: NFT_CONTRACT_3,
                             to: account?.address || "",
                             quantity: BigInt(1)
                         })
@@ -119,7 +119,7 @@ export const Staking = () => {
                 <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", width: "500px"}}>
                     {ownedNFTs && ownedNFTs.length > 0 ? (
                         ownedNFTs.map((nft) => (
-                            <NFTCard
+                            <NFTCard3
                                 key={nft.id}
                                 nft={nft}
                                 refetch={getOwnedNFTs}
@@ -140,7 +140,7 @@ export const Staking = () => {
                 <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", width: "500px"}}>
                     {stakedInfo && stakedInfo[0].length > 0 ? (
                         stakedInfo[0].map((nft: any, index: number) => (
-                            <StakedNFTCard
+                            <StakedNFTCard3
                                 key={index}
                                 tokenId={nft}
                                 refetchStakedInfo={refetchStakedInfo}
@@ -156,7 +156,7 @@ export const Staking = () => {
                 width: "100%",
                 border: "1px solid #333"
             }} />
-            <StakeRewards />  
+            <StakeRewards3 />  
         </div>
     );
 };

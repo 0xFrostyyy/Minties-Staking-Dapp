@@ -1,5 +1,5 @@
 import { TransactionButton, useActiveAccount, useReadContract } from "thirdweb/react";
-import { REWARD_TOKEN_CONTRACT, STAKING_CONTRACT } from "../utils/contracts";
+import { REWARD_TOKEN_CONTRACT, STAKING_CONTRACT_1 } from "../../utils/contracts";
 import { prepareContractCall, toEther } from "thirdweb";
 import { useEffect } from "react";
 import { balanceOf } from "thirdweb/extensions/erc721";
@@ -26,7 +26,7 @@ export const StakeRewards = () => {
         data: stakedInfo,
         refetch: refetchStakedInfo,
     } = useReadContract({
-        contract: STAKING_CONTRACT,
+        contract: STAKING_CONTRACT_1,
         method: "getStakeInfo",
         params: [accountAddress], // Always pass a valid address, even if it's a fallback
     });
@@ -58,7 +58,7 @@ export const StakeRewards = () => {
                         throw new Error("Account address is undefined");
                     }
                     return prepareContractCall({
-                        contract: STAKING_CONTRACT,
+                        contract: STAKING_CONTRACT_1,
                         method: "claimRewards",
                     });
                 }}

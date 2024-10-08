@@ -1,20 +1,20 @@
 import { MediaRenderer, TransactionButton, useReadContract } from "thirdweb/react";
-import { NFT_CONTRACT, STAKING_CONTRACT } from "../utils/contracts";
+import { NFT_CONTRACT_3, STAKING_CONTRACT_3 } from "../../utils/contracts";
 import { getNFT } from "thirdweb/extensions/erc721";
 import { client } from "@/app/client";
 import { prepareContractCall } from "thirdweb";
 
-type StakedNFTCardProps = {
+type StakedNFTCard3Props = {
     tokenId: bigint;
     refetchStakedInfo: () => void;
     refetchOwnedNFTs: () => void;
 };
 
-export const StakedNFTCard: React.FC<StakedNFTCardProps> = ({ tokenId, refetchStakedInfo, refetchOwnedNFTs }) => {
+export const StakedNFTCard3: React.FC<StakedNFTCard3Props> = ({ tokenId, refetchStakedInfo, refetchOwnedNFTs }) => {
     const { data: nft } = useReadContract(
         getNFT,
         {
-            contract: NFT_CONTRACT,
+            contract: NFT_CONTRACT_3,
             tokenId: tokenId,
         }
     );
@@ -35,7 +35,7 @@ export const StakedNFTCard: React.FC<StakedNFTCardProps> = ({ tokenId, refetchSt
             <TransactionButton
                 transaction={() => (
                     prepareContractCall({
-                        contract: STAKING_CONTRACT,
+                        contract: STAKING_CONTRACT_3,
                         method: "withdraw",
                         params: [[tokenId]]
                     })

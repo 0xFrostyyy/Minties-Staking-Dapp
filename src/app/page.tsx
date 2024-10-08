@@ -1,7 +1,9 @@
 import { ConnectEmbed } from "@/app/thirdweb";
 import { client } from "./client";
 import { chain } from "./chain";
-import { Staking } from "../../components/Staking";
+import { Staking } from "../../components/Staking/Staking";
+import { Staking2 } from "../../components/Staking/Staking2";
+import { Staking3 } from "../../components/Staking/Staking3";
 
 export default function Home() {
   return (
@@ -17,7 +19,11 @@ export default function Home() {
         client={client}
         chain={chain}
       />
-      <Staking />
+      <div className="flex gap-2 flex-col ixml:flex-row">
+        <Staking />
+        <Staking2 />
+        <Staking3 />
+      </div>
     </div>
   );
 }

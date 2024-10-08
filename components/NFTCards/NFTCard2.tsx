@@ -1,7 +1,7 @@
 import { client } from "@/app/client";
 import { NFT, prepareContractCall } from "thirdweb";
 import { MediaRenderer, TransactionButton } from "thirdweb/react";
-import { NFT_CONTRACT, STAKING_CONTRACT } from "../utils/contracts";
+import { NFT_CONTRACT_2, STAKING_CONTRACT_2 } from "../../utils/contracts";
 import { useState } from "react";
 import { approve } from "thirdweb/extensions/erc721";
 
@@ -11,7 +11,7 @@ type OwnedNFTsProps = {
     refecthStakedInfo: () => void;
 };
 
-export const NFTCard = ({ nft, refetch, refecthStakedInfo }: OwnedNFTsProps) => {
+export const NFTCard2 = ({ nft, refetch, refecthStakedInfo }: OwnedNFTsProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isApproved, setIsApproved] = useState(false);
 
@@ -89,8 +89,8 @@ export const NFTCard = ({ nft, refetch, refecthStakedInfo }: OwnedNFTsProps) => 
                             <TransactionButton
                                 transaction={() => (
                                     approve({
-                                        contract: NFT_CONTRACT,
-                                        to: STAKING_CONTRACT.address as `0x${string}`,
+                                        contract: NFT_CONTRACT_2,
+                                        to: STAKING_CONTRACT_2.address as `0x${string}`,
                                         tokenId: nft.id
                                     })
                                 )}
@@ -103,7 +103,7 @@ export const NFTCard = ({ nft, refetch, refecthStakedInfo }: OwnedNFTsProps) => 
                             <TransactionButton
                                 transaction={() => (
                                     prepareContractCall({
-                                        contract: STAKING_CONTRACT,
+                                        contract: STAKING_CONTRACT_2,
                                         method: "stake",
                                         params: [[nft.id]]
                                     })
