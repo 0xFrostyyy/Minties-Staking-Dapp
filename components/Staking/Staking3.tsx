@@ -65,7 +65,6 @@ export const Staking3 = () => {
             alignItems: "center",
             backgroundColor: "#151515",
             borderRadius: "8px",
-            width: "500px",
             padding: "20px",
         }}>
             {/* <div style={{
