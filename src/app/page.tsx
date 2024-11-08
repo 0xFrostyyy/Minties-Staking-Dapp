@@ -8,12 +8,8 @@ import { ConnectButton, TransactionButton, useActiveAccount, useReadContract } f
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-3 items-center">
-      <h1>ERC-721 Staking App</h1>
-      <ConnectEmbed
-        client={client}
-        chain={chain}
-      />
+    <div className="flex flex-col gap-3 items-center bg-[#B0FE76]">
+      <h1 className="text-black">ERC-721 Staking App</h1>
       <ConnectButton
           client={client}
           chain={chain}

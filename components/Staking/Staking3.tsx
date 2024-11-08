@@ -63,10 +63,10 @@ export const Staking3 = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            backgroundColor: "#151515",
             borderRadius: "8px",
             padding: "20px",
-        }}>
+        }}
+        className="text-black  bg-[#4D8B31] ">
             {/* <div style={{
                 display: "flex",
                 flexDirection: "row",
