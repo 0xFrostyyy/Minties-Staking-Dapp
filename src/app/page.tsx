@@ -8,7 +8,8 @@ import { ConnectButton, TransactionButton, useActiveAccount, useReadContract } f
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-3 items-center bg-[#B0FE76] pt-3">
+    <div className="flex flex-col gap-3 items-center pt-3"
+        style={{ backgroundImage: "url('/background.jpg')" }} >
       <ConnectButton
           client={client}
           chain={chain}

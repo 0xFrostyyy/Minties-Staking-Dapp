@@ -32,7 +32,7 @@ export const NFTCard = ({ nft, refetch, refecthStakedInfo }: OwnedNFTsProps) => 
                 onClick={() => setIsModalOpen(true)}
                 style={{
                     border: "none",
-                    backgroundColor: "#B0FE76",
+                    backgroundColor: "#4D8B31",
                     color: "#000",
                     padding: "10px",
                     borderRadius: "10px",
@@ -61,7 +61,9 @@ export const NFTCard = ({ nft, refetch, refecthStakedInfo }: OwnedNFTsProps) => 
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center"
-                    }}>
+                    }}
+                    className="!bg-[#EED3B1]"
+                    >
                         <div style={{
                             display: "flex",
                             justifyContent: "flex-end",
@@ -72,12 +74,12 @@ export const NFTCard = ({ nft, refetch, refecthStakedInfo }: OwnedNFTsProps) => 
                                 style={{
                                     border: "none",
                                     backgroundColor: "transparent",
-                                    color: "#fff",
+                                    color: "#000",
                                     cursor: "pointer"
                                 }}
                             >Close</button>
                         </div>
-                        <h3 style={{ margin: "10px 0" }}>You about to stake:</h3>
+                        <h3 style={{ margin: "10px 0" }} className="text-black">You about to stake:</h3>
                         <MediaRenderer
                             client={client}
                             src={nft.metadata.image}
@@ -87,19 +89,18 @@ export const NFTCard = ({ nft, refetch, refecthStakedInfo }: OwnedNFTsProps) => 
                             }}
                         />
                         {!isApproved ? (
-                            <TransactionButton
-                                transaction={() => (
-                                    approve({
-                                        contract: NFT_CONTRACT_1,
-                                        to: STAKING_CONTRACT_1.address as `0x${string}`,
-                                        tokenId: nft.id
-                                    })
-                                )}
-                                style={{
-                                    width: "100%"
-                                }}
+                           <TransactionButton
+                                transaction={() => approve({
+                                    contract: NFT_CONTRACT_1,
+                                    to: STAKING_CONTRACT_1.address as `0x${string}`,
+                                    tokenId: nft.id
+                                })}
+                                unstyled
+                                className="w-full bg-[#4D8B31] text-black rounded px-4 py-2 hover:opacity-90"
                                 onTransactionConfirmed={() => setIsApproved(true)}
-                            >Approve</TransactionButton>
+                            >
+                                Approve
+                            </TransactionButton>
                         ) : (
                             <TransactionButton
                                 transaction={() => (
@@ -118,6 +119,8 @@ export const NFTCard = ({ nft, refetch, refecthStakedInfo }: OwnedNFTsProps) => 
                                 style={{
                                     width: "100%"
                                 }}
+                                unstyled
+                                className="w-full bg-[#4D8B31] text-black rounded px-4 py-2 hover:opacity-90"
                             >Stake</TransactionButton>
                         )}
                         

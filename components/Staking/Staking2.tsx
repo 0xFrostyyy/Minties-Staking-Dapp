@@ -66,7 +66,7 @@ export const Staking2 = () => {
             borderRadius: "8px",
             padding: "20px",
         }}
-        className="text-black  bg-[#4D8B31] ">
+        className="text-black  bg-[#EED3B1] ">
             {/* <div style={{
                 display: "flex",
                 flexDirection: "row",

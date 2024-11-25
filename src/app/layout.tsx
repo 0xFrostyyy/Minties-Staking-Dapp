@@ -16,13 +16,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <div className="h-screen bg-[#B0FE76]">
+      <div 
+        className=" overflow-x-hidden max-w-screen h-screen bg-cover bg-center"
+        style={{ backgroundImage: "url('/background.jpg')" }} 
+        >
         <body className={inter.className}>
           <ThirdwebProvider>
             {children}
           </ThirdwebProvider>
         </body>
-        </div>
+      </div>
     </html>
   );
 }

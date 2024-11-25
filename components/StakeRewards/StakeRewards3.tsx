@@ -69,7 +69,7 @@ export const StakeRewards3 = () => {
                 }}
                 style={{
                     border: "none",
-                    backgroundColor: "#B0FE76",
+                    backgroundColor: "#4D8B31",
                     color: "#000",
                     padding: "10px",
                     borderRadius: "10px",
