@@ -15,6 +15,7 @@ export default function Home() {
           chain={chain}
       />
       <div className="grid grid-cols-1 lg:grid-cols-2 xxl:grid-cols-3 gap-3">
+      
         <Staking />
         <Staking2 />
         <Staking3 />

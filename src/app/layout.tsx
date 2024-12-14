@@ -16,16 +16,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <div 
+      <body 
         className=" overflow-x-hidden max-w-screen h-screen bg-cover bg-center"
         style={{ backgroundImage: "url('/background.jpg')" }} 
         >
-        <body className={inter.className}>
+        <div className={inter.className}>
           <ThirdwebProvider>
             {children}
           </ThirdwebProvider>
-        </body>
-      </div>
+        </div>
+      </body>
     </html>
   );
 }

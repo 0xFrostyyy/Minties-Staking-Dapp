@@ -17,46 +17,85 @@ export const Staking2 = () => {
     const [ownedNFTs, setOwnedNFTs] = useState<NFT[]>([]);
 
     const getOwnedNFTs = async () => {
-        let ownedNFTs: NFT[] = [];
-
-        const totalNFTSupply = await totalSupply({
-            contract: NFT_CONTRACT_2,
-        });
-        const nfts = await getNFTs({
-            contract: NFT_CONTRACT_2,
-            start: 0,
-            count: parseInt(totalNFTSupply.toString()),
-        });
+        if (!account?.address) return;
         
-        for (let nft of nfts) {
-            const owner = await ownerOf({
+        try {
+            const totalNFTSupply = await totalSupply({
                 contract: NFT_CONTRACT_2,
-                tokenId: nft.id,
             });
-            if (owner === account?.address) {
-                ownedNFTs.push(nft);
+
+            const totalSupplyNumber = parseInt(totalNFTSupply.toString());
+            let ownedNFTs: NFT[] = [];
+
+            // First check ownership for all tokens
+            const ownershipPromises = [];
+            for (let i = 0; i < totalSupplyNumber; i++) {
+                ownershipPromises.push(
+                    ownerOf({
+                        contract: NFT_CONTRACT_2,
+                        tokenId: BigInt(i),
+                    }).catch(() => null) // Handle any errors in ownership check
+                );
             }
+
+            const owners = await Promise.all(ownershipPromises);
+
+            // Get indices of tokens owned by the user
+            const ownedIndices = owners
+                .map((owner, index) => owner === account.address ? index : -1)
+                .filter(index => index !== -1);
+
+            // Only fetch NFTs that are owned by the user
+            if (ownedIndices.length > 0) {
+                const ownedNFTsData = await getNFTs({
+                    contract: NFT_CONTRACT_2,
+                    start: ownedIndices[0],
+                    count: 1, // Fetch one at a time to prevent overload
+                });
+
+                ownedNFTs = ownedNFTsData;
+            }
+
+            setOwnedNFTs(ownedNFTs);
+        } catch (error) {
+            console.error("Error fetching owned NFTs:", error);
+            setOwnedNFTs([]);
         }
-        setOwnedNFTs(ownedNFTs);
     };
-    
+
     useEffect(() => {
         if (account) {
             getOwnedNFTs();
+        } else {
+            setOwnedNFTs([]);
         }
     }, [account]);
 
-    // Call useReadContract with a fallback empty string for the address
     const {
         data: stakedInfo,
         refetch: refetchStakedInfo,
     } = useReadContract({
         contract: STAKING_CONTRACT_2,
         method: "getStakeInfo",
-        params: [account?.address || "0x0000000000000000000000000000000000000000"],  // Fallback to a placeholder address
+        params: account ? ([account.address] as const) : (() => Promise.resolve(['0x0000000000000000000000000000000000000000'] as const)),
     });
 
-  
+    // If not connected, show connect prompt
+    if (!account) {
+        return (
+            <div style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                borderRadius: "8px",
+                padding: "20px",
+            }}
+            className="text-black bg-[#EED3B1]">
+                <h2>Connect your wallet to view your NFTs</h2>
+                <ConnectButton client={client} />
+            </div>
+        );
+    }
 
     return (
         <div style={{
@@ -107,7 +146,7 @@ export const Staking2 = () => {
                 margin: "20px 0",
                 width: "100%"
             }}>
-                <h2>Owned NFTs  Collection 3</h2>
+                <h2>Owned NFTs  Collection 2</h2>
                 <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", width: "500px"}}>
                     {ownedNFTs && ownedNFTs.length > 0 ? (
                         ownedNFTs.map((nft) => (
@@ -130,7 +169,7 @@ export const Staking2 = () => {
             <div style={{ width: "100%", margin: "20px 0" }}>
                 <h2>Staked NFTs</h2>
                 <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", width: "500px"}}>
-                    {stakedInfo && stakedInfo[0].length > 0 ? (
+                    {stakedInfo && stakedInfo[0] && stakedInfo[0].length > 0 ? (
                         stakedInfo[0].map((nft: any, index: number) => (
                             <StakedNFTCard2
                                 key={index}
@@ -152,4 +191,3 @@ export const Staking2 = () => {
         </div>
     );
 };
-
