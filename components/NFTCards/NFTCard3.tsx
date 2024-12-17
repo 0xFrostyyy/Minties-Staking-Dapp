@@ -54,7 +54,7 @@ export const NFTCard3 = ({ nft, refetch, refecthStakedInfo }: OwnedNFTsProps) =>
                 </div>
             )}
             <p style={{ margin: "0 10px 10px 10px"}}>
-                {nft.metadata.name || `Token ID: ${nft.tokenId}`}
+                {nft.metadata.name || `Token ID: ${nft.id}`}
             </p>
             <button
                 onClick={() => setIsModalOpen(true)}
