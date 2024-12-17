@@ -17,17 +17,45 @@ export const NFTCard2 = ({ nft, refetch, refecthStakedInfo }: OwnedNFTsProps) =>
 
     return (
         <div style={{ margin: "10px" }}>
-            <MediaRenderer
-                client={client}
-                src={nft.metadata.image}
-                style={{
+            {nft.metadata.image ? (
+                <MediaRenderer
+                    client={client}
+                    src={nft.metadata.image}
+                    style={{
+                        borderRadius: "10px",
+                        marginBottom: "10px",
+                        height: "200px",
+                        width: "200px"
+                    }}
+                />
+            ) : (
+                <div style={{
                     borderRadius: "10px",
                     marginBottom: "10px",
                     height: "200px",
-                    width: "200px"
-                }}
-            />
-            <p style={{ margin: "0 10px 10px 10px"}}>{nft.metadata.name}</p>
+                    width: "200px",
+                    backgroundColor: "#f0f0f0",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: "10px",
+                    textAlign: "center"
+                }}>
+                    <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>
+                        Image temporarily unavailable
+                    </p>
+                    <p style={{ margin: "5px 0", fontSize: "12px", color: "#888" }}>
+                        Network issues fetching metadata
+                    </p>
+                    <p style={{ margin: 0, fontSize: "12px", color: "#888" }}>
+                        NFT can still be staked/unstaked
+                    </p>
+                </div>
+            )}
+            <p style={{ margin: "0 10px 10px 10px"}}>
+                {nft.metadata.name || `Token ID: ${nft.tokenId}`}
+            </p>
             <button
                 onClick={() => setIsModalOpen(true)}
                 style={{
@@ -80,14 +108,40 @@ export const NFTCard2 = ({ nft, refetch, refecthStakedInfo }: OwnedNFTsProps) =>
                             >Close</button>
                         </div>
                         <h3 style={{ margin: "10px 0" }} className="text-black">You about to stake:</h3>
-                        <MediaRenderer
-                            client={client}
-                            src={nft.metadata.image}
-                            style={{
+                        {nft.metadata.image ? (
+                            <MediaRenderer
+                                client={client}
+                                src={nft.metadata.image}
+                                style={{
+                                    borderRadius: "10px",
+                                    marginBottom: "10px"
+                                }}
+                            />
+                        ) : (
+                            <div style={{
                                 borderRadius: "10px",
-                                marginBottom: "10px"
-                            }}
-                        />
+                                marginBottom: "10px",
+                                height: "200px",
+                                width: "200px",
+                                backgroundColor: "#f0f0f0",
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                padding: "10px",
+                                textAlign: "center"
+                            }}>
+                                <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>
+                                    Image temporarily unavailable
+                                </p>
+                                <p style={{ margin: "5px 0", fontSize: "12px", color: "#888" }}>
+                                    Network issues fetching metadata
+                                </p>
+                                <p style={{ margin: 0, fontSize: "12px", color: "#888" }}>
+                                    NFT can still be staked/unstaked
+                                </p>
+                            </div>
+                        )}
                         {!isApproved ? (
                            <TransactionButton
                                 transaction={() => approve({

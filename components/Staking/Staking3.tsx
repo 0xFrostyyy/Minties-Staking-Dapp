@@ -49,11 +49,12 @@ export const Staking3 = () => {
             if (ownedIndices.length > 0) {
                 const ownedNFTsData = await getNFTs({
                     contract: NFT_CONTRACT_3,
-                    start: ownedIndices[0],
-                    count: 1, // Fetch one at a time to prevent overload
+                    start: 0,
+                    count: totalSupplyNumber, // Fetch all NFTs
                 });
 
-                ownedNFTs = ownedNFTsData;
+                // Filter to only include NFTs owned by the user
+                ownedNFTs = ownedNFTsData.filter((_, index) => ownedIndices.includes(index));
             }
 
             setOwnedNFTs(ownedNFTs);
